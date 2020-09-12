@@ -1,4 +1,4 @@
-/* eslint-disable no-unreachable */
+import axios from 'axios';
 import _ from "lodash";
 
 export default {
@@ -7,14 +7,20 @@ export default {
     return {
       api_key: 'ceb9c8b643af2ebe2c6539747086ade0',
       url_base: 'https://api.openweathermap.org/data/2.5/weather/',
+      
       location: '',
-      selectedCity: '',
+      
       weather: null,
       cities: [],
+
+      isInvalidCity: false,
+      isLoading: false,
     };
   },
   methods: {
     getCities(value) {
+      this.isLoading = true;
+      
       fetch(`https://wft-geo-db.p.rapidapi.com/v1/geo/cities?countryIds=NL&namePrefix=${value}`, {
         "method": "GET",
         "headers": {
@@ -22,27 +28,33 @@ export default {
           "x-rapidapi-key": "22b936eb1dmshace1924db8f69e5p1d8d85jsnda80c2481b30"
         }
       })
-      .then((response) => {
+      .then(response => {
         return response.json();
       })
       .then(cities => {
         this.cities = [...new Set(cities.data.map((city) => {
           return city.name;
         }))];
+        this.isLoading = false;
       })
       .catch(err => {
-        console.log(err);
+        console.log('getCities error: ', err);
+        this.isLoading = false;
       });
     },
-    fetchWeather() {
-      fetch(`${this.url_base}?q=Netherlands&${this.location}&units=metric&APPID=${this.api_key}`)
-      .then((response) => {
-        return response.json();
-      }).then((results) => {
-        this.weather = results;
+    fetchWeather(location) {
+      axios.get(`${this.url_base}?q=${location}&units=metric&APPID=${this.api_key}`)
+      .then(results => {
+        this.weather = results.data;
+        
+        this.isInvalidCity = false;
+        
+        this.location = location;
+        this.cities = [];
       })
       .catch(err => {
-        console.log(err);
+        console.log('fetchWeatcher error: ', err);
+        this.isInvalidCity = true;
       });
     },
     dateBuilder() {
@@ -58,10 +70,7 @@ export default {
        return `${day} ${date} ${month} ${year}`;
     },
     setLocation(city) {
-      this.location = city;
-      this.selectedCity = city;
-      this.cities = [];
-      this.fetchWeather();
+      this.fetchWeather(city);
     },
     deleteLocation() {
       this.location = '';
@@ -78,7 +87,6 @@ export default {
     location(value) {
       if (!value.length) {
         this.cities = [];
-        console.log(this.cities);
       }
     }
   }

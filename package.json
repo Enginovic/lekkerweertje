@@ -9,9 +9,11 @@
     "deploy": "node scripts/gh-pages-deploy.js"
   },
   "dependencies": {
+    "axios": "^0.20.0",
     "core-js": "^3.6.5",
     "lodash": "^4.17.20",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "vue-icon": "^2.1.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.5.0",
