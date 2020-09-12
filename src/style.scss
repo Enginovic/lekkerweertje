@@ -46,15 +46,18 @@ main {
   outline: none;
   background: none;
 
-  box-shadow: 0 0 16px rgba(0, 0, 0, .25);
+  box-shadow: 0 0 8px rgba(0, 0, 0, .25);
   background-color: rgba(255, 255, 255, 0.5);
-  border-radius: 0 16px 0 0;
+  border-radius: 8px;
   transition: .4s;
 
   &:focus {
-    box-shadow: 0 0 16px rgba(0, 0, 0, .25);
+    box-shadow: 0 0 8px rgba(0, 0, 0, .25);
     background-color: rgba(255, 255, 255, 0.75);
-    border-radius: 16px 16px 0 0;
+  }
+
+  &.results {
+    border-radius: 8px 8px 0 0;
   }
 }
 
@@ -68,13 +71,15 @@ main {
 
 .weather-box {
   text-align: center;
+  margin: 30px 0;
   
   .location {
     color: #fff;
-    font-size: 21px;
+    font-size: 26px;
     font-weight: 500;
     text-align: center;
     text-shadow: 1px 3px rgba(0, 0, 0, .25);
+    margin-bottom: 14px;
   }
 
   .temp {
@@ -87,17 +92,9 @@ main {
     text-shadow: 3px 6px rgba(0, 0, 0, .25);
     background-color: rgba(255, 255, 255, 0.25);
     border-radius: 16px;
-    margin: 30px 0;
+    margin: 0;
 
     box-shadow: 3px 6px rgba(0, 0, 0, .25);
-  }
-
-  .weather {
-    color: #fff;
-    font-size: 14px;
-    font-weight: 700;
-    font-style: italic;
-    text-shadow: 3px 6px rgba(0, 0, 0, .25);
   }
 }
 
@@ -112,6 +109,11 @@ main {
 
   &:last-child {
     border-radius: 0 0 16px 16px;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.75);
   }
 }
 

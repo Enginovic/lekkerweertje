@@ -5,12 +5,14 @@
         <input 
           type="text" 
           class="search-bar" 
+          :class="cities.length ? 'results' : ''"
           placeholder="Zoek op plaats"
           v-model="location"
           @keyup.enter="fetchWeather"
+          @input="debounceInput"
         />
 
-        <template v-if="cities.length">
+        <template v-if="cities.length && location.length">
           <ul class="cities">
               <li
                 class="city"
@@ -37,6 +39,7 @@
         </div>
 
         <div class="weather-box" v-if="weather">
+          <div class="location">{{ location }}</div>
           <div class="temp">{{ Math.round(weather.main.temp) }}º</div>
         </div>
       </div>

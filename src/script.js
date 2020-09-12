@@ -1,4 +1,5 @@
-// import _ from "lodash";
+/* eslint-disable no-unreachable */
+import _ from "lodash";
 
 export default {
   name: 'App',
@@ -12,15 +13,9 @@ export default {
       cities: [],
     };
   },
-  watch: {
-    location: (val) => {
-      this.getCities(val);
-    },
-  },
   methods: {
-    getCities(val) {
-      console.log('get cities');
-      fetch(`https://wft-geo-db.p.rapidapi.com/v1/geo/cities?countryIds=NL&namePrefix=${val}`, {
+    getCities(value) {
+      fetch(`https://wft-geo-db.p.rapidapi.com/v1/geo/cities?countryIds=NL&namePrefix=${value}`, {
         "method": "GET",
         "headers": {
           "x-rapidapi-host": "wft-geo-db.p.rapidapi.com",
@@ -71,5 +66,20 @@ export default {
     deleteLocation() {
       this.location = '';
     },
+    debounceInput: _.debounce(function(e) {
+      if (!e.target.value) {
+        return;
+      }
+      
+      this.getCities(e.target.value);
+    }, 1000),
   },
+  watch: {
+    location(value) {
+      if (!value.length) {
+        this.cities = [];
+        console.log(this.cities);
+      }
+    }
+  }
 };
